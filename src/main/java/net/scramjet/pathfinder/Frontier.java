@@ -4,54 +4,46 @@ import net.scramjet.Coords;
 import net.scramjet.Grid;
 
 import java.util.*;
-/*
-frontier.put(start )
-reached = set()
-reached.add(start)
-
-while not frontier.empty():
-   current = frontier.get()
-   for next in graph.neighbors(current):
-      if next not in reached:
-         frontier.put(next)
-         reached.add(next)
- */
 
 public class Frontier {
     private final Grid grid;
 
-    private final List<Coords> frontier = new ArrayList<>();
+    private final PriorityQueue<Node> frontier = new PriorityQueue<>();
     private final Map<Coords, Coords> cameFrom = new HashMap<>();
+    private final Map<Coords, Float> costSoFar = new HashMap<>();
 
     public Frontier(Grid grid) {
         this.grid = grid;
     }
 
 
-    public Map<Coords, Coords> generate(Coords startPoint) {
+    public Map<Coords, Coords> generate(Coords startPoint, Coords endPoint) {
         frontier.clear();
         cameFrom.clear();
-        frontier.add(startPoint);
+        costSoFar.clear();
+        //
+        frontier.add(new Node(startPoint, 0.0F));
         cameFrom.put(startPoint, null);
-        /*
-        while not frontier.empty():
-           current = frontier.get()
-   for next in graph.neighbors(current):
-      if next not in came_from:
-         frontier.put(next)
-         came_from[next] = current
-         */
+        costSoFar.put(startPoint, 0F);
+        //
         while (!frontier.isEmpty()) {
-            Coords current = frontier.remove(0);
-            for (Coords next : grid.getNeighbors(current)) {
-                System.out.println(next);
-                if (!cameFrom.containsKey(next)) {
-                    frontier.add(next);
-                    cameFrom.put(next, current);
+            Node current = frontier.poll();
+            if(current.getCoords() == endPoint) break;
+            for (Coords next : grid.getNeighbors(current.getCoords())) {
+                float newCost = costSoFar.get(current.getCoords()) + grid.cost(current.getCoords(), next);
+                if (!costSoFar.containsKey(next) || newCost < costSoFar.get(next)) {
+                    float priority = newCost + heuristic(endPoint, next);
+                    frontier.add(new Node(next, priority));
+                    cameFrom.put(next, current.getCoords());
+                    costSoFar.put(next, newCost);
                 }
             }
         }
 
         return cameFrom;
+    }
+
+    private float heuristic (Coords a, Coords b) {
+        return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getX());
     }
 }

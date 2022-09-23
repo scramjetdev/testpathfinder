@@ -13,7 +13,7 @@ public class Pathfinder {
     }
 
     public List<Coords> getPath(Coords from, Coords to) {
-        Map<Coords, Coords> cameFrom = frontier.generate(from);
+        Map<Coords, Coords> cameFrom = frontier.generate(from, to);
         List<Coords> path = new ArrayList<>();
         Coords current = to;
 

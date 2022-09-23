@@ -24,13 +24,91 @@ public class Grid {
     }
 
     public List<Coords> getNeighbors(Coords coords) {
-        List<Coords> toReturn = new ArrayList<>();
+        return getNeighbors(coords.getX(), coords.getY());
+    }
+    public List<Coords> getNeighbors(int x, int y) {
+        List<Coords> neighbors = new ArrayList<>();
+        /*
+        C = Center
+        N = neighbor
+        | = Blocks that needs to be false
+        */
 
-        if (!get(coords.getX() + 1, coords.getY())) toReturn.add(new Coords(coords.getX() + 1, coords.getY()));
-        if (!get(coords.getX() - 1, coords.getY())) toReturn.add(new Coords(coords.getX() - 1, coords.getY()));
-        if (!get(coords.getX() , coords.getY() +1)) toReturn.add(new Coords(coords.getX(), coords.getY() + 1));
-        if (!get(coords.getX() , coords.getY() -1)) toReturn.add(new Coords(coords.getX(), coords.getY()- 1));
+        /*
+         *  *  *
+         *  C  N
+         *  *  *
+         */
+        if(!get(x + 1, y)) neighbors.add(new Coords(x + 1, y));
 
-       return toReturn;
+        /*
+         *  *  *
+         *  C  |
+         *  |  N
+
+         |1 = (1,0)
+         |2 = (0,-1)
+         */
+        if (!get(x + 1, y - 1) && (!get(x + 1, y) || !get(x, y - 1))) neighbors.add(new Coords(x + 1, y - 1));
+
+        /*
+         *  *  *
+         *  C  *
+         *  N  *
+         */
+        if(!get(x, y - 1)) neighbors.add(new Coords(x, y - 1));
+
+        /*
+         *  *  *
+         |  C  *
+         N  |  *
+
+         |1 = (-1,0)
+         |2 = (0,-1)
+         */
+        if(!get(x - 1, y - 1) && (!get(x - 1, y) || !get(x, y - 1))) neighbors.add(new Coords(x - 1, y - 1));
+
+         /*
+         *  *  *
+         N  C  *
+         *  *  *
+         */
+        if(!get(x - 1, y)) neighbors.add(new Coords(x - 1, y));
+
+        /*
+         N  |  *
+         |  C  *
+         *  *  *
+
+         |1 = (-1,0)
+         |2 = (0,1)
+         */
+        if(!get(x - 1, y + 1) && (!get(x - 1, y) || !get(x, y + 1))) neighbors.add(new Coords(x - 1, y + 1));
+
+        /*
+         *  N  *
+         *  C  *
+         *  *  *
+         */
+        if(!get(x, y + 1)) neighbors.add(new Coords(x, y + 1));
+
+        /*
+         *  |  N
+         *  C  |
+         *  *  *
+
+         |1 = (0,1)
+         |2 = (1,0)
+         */
+        if(!get(x + 1, y + 1) && (!get(x, y + 1) || !get(x + 1, y))) neighbors.add(new Coords(x + 1, y + 1));
+
+       return neighbors;
+    }
+
+    public float cost(Coords origin, Coords neighbor) {
+        if (Math.abs(neighbor.getX() - origin.getX()) == 1 && Math.abs(neighbor.getY() - origin.getY()) == 1) {
+            return 0.9F;
+        }
+        return 0.8F;
     }
 }
