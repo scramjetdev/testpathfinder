@@ -29,6 +29,8 @@ public class Frontier {
 
 
     public Map<Coords, Coords> generate(Coords startPoint) {
+        frontier.clear();
+        cameFrom.clear();
         frontier.add(startPoint);
         cameFrom.put(startPoint, null);
         /*

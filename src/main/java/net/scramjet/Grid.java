@@ -28,8 +28,8 @@ public class Grid {
 
         if (!get(coords.getX() + 1, coords.getY())) toReturn.add(new Coords(coords.getX() + 1, coords.getY()));
         if (!get(coords.getX() - 1, coords.getY())) toReturn.add(new Coords(coords.getX() - 1, coords.getY()));
-        if (!get(coords.getX() , coords.getY() +1)) toReturn.add(new Coords(coords.getX() + 1, coords.getY()));
-        if (!get(coords.getX() , coords.getY() -1)) toReturn.add(new Coords(coords.getX() - 1, coords.getY()));
+        if (!get(coords.getX() , coords.getY() +1)) toReturn.add(new Coords(coords.getX(), coords.getY() + 1));
+        if (!get(coords.getX() , coords.getY() -1)) toReturn.add(new Coords(coords.getX(), coords.getY()- 1));
 
        return toReturn;
     }

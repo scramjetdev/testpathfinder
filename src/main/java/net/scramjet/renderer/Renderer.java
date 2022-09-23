@@ -3,7 +3,6 @@ package net.scramjet.renderer;
 import net.scramjet.Coords;
 import net.scramjet.Grid;
 import net.scramjet.pathfinder.Pathfinder;
-
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import java.awt.*;
@@ -43,6 +42,7 @@ public class Renderer extends JFrame {
 
                 int gridX = mouseX / gridXSize;
                 int gridY = mouseY / gridYSize;
+                System.out.println(gridX + " " + gridY);
 
                 if(e.getButton() == MouseEvent.BUTTON1) {
                     grid.set(gridX, gridY, !grid.get(gridX, gridY));
